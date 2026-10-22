@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sensor de Ré do McQueen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main id="app" class="verde">
+
+    <!-- ========== 1. CABEÇALHO ========== -->
+    <header>
+      <div class="placa">ROUTE 66</div>
+      <h1>Sensor de Ré</h1>
+      <p>Estacionamento do Relâmpago McQueen</p>
+    </header>
+
+    <!-- ========== 2. CÂMERA DE RÉ ========== -->
+    <section id="camera" class="caixa">
+      <svg viewBox="0 0 400 260">
+
+        <!-- Céu, sol e montanhas -->
+        <defs>
+          <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff7e5f" />
+            <stop offset="1" stop-color="#ffd27a" />
+          </linearGradient>
+          <linearGradient id="areia" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e9b56f" />
+            <stop offset="1" stop-color="#c98a4b" />
+          </linearGradient>
+        </defs>
+        <rect width="400" height="122" fill="url(#ceu)" />
+        <circle cx="300" cy="96" r="26" fill="#fff0b8" />
+        <polygon points="0,122 0,92 30,84 52,92 78,70 104,70 122,92 150,122" fill="#b8452a" />
+        <polygon points="120,122 150,96 172,90 196,96 220,122" fill="#9c3a24" />
+        <polygon points="250,122 276,88 300,80 330,80 352,98 400,92 400,122" fill="#a84129" />
+
+        <!-- Chão e estrada -->
+        <rect y="120" width="400" height="140" fill="url(#areia)" />
+        <polygon points="188,120 212,120 358,260 42,260" fill="#4a4a52" />
+        <line x1="188" y1="120" x2="42" y2="260" stroke="#ffd21f" stroke-width="3" />
+        <line x1="212" y1="120" x2="358" y2="260" stroke="#ffd21f" stroke-width="3" />
+        <line x1="200" y1="120" x2="200" y2="260" stroke="#ffd21f" stroke-width="3" stroke-dasharray="10 12" />
+
+        <!-- Faixas de distância (verde, amarela e vermelha) -->
+        <polygon id="faixa-verde" class="faixa" points="141,165 259,165 232,135 168,135" fill="#3ddc5a" />
+        <polygon id="faixa-amarela" class="faixa" points="104,200 296,200 259,165 141,165" fill="#ffd21f" />
+        <polygon id="faixa-vermelha" class="faixa" points="75,228 325,228 296,200 104,200" fill="#ff3b30" />
+
+        <!-- Obstáculo: pilha de pneus do Luigi (o JavaScript move este grupo) -->
+        <g id="obstaculo-camera" transform="translate(200 120) scale(0.25)">
+          <ellipse cx="0" cy="2" rx="46" ry="8" fill="#000" opacity="0.35" />
+          <g fill="#1c1c1c" stroke="#000" stroke-width="2">
+            <rect x="-32" y="-26" width="64" height="26" rx="12" />
+            <rect x="-32" y="-52" width="64" height="26" rx="12" />
+            <rect x="-32" y="-78" width="64" height="26" rx="12" />
+          </g>
+          <g stroke="#f4f4f4" stroke-width="3">
+            <line x1="-18" y1="-13" x2="18" y2="-13" />
+            <line x1="-18" y1="-39" x2="18" y2="-39" />
+            <line x1="-18" y1="-65" x2="18" y2="-65" />
+          </g>
+          <rect x="-20" y="-96" width="40" height="18" rx="4" fill="#2e7d32" stroke="#000" stroke-width="2" />
+          <text x="0" y="-82" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="sans-serif">LUIGI</text>
+        </g>
+
+        <!-- Para-choque do McQueen -->
+        <path d="M0 260 L0 234 Q200 216 400 234 L400 260Z" fill="#d11a1a" />
+        <path d="M0 246 Q200 230 400 246 L400 260 L0 260Z" fill="#a50f0f" />
+        <rect x="12" y="232" width="40" height="12" rx="5" fill="#ff5a3c" stroke="#7a0b0b" stroke-width="2" />
+        <rect x="348" y="232" width="40" height="12" rx="5" fill="#ff5a3c" stroke="#7a0b0b" stroke-width="2" />
+        <polygon points="208,224 188,242 200,242 192,258 216,236 203,236" fill="#ffd21f" stroke="#7a0b0b" stroke-width="1.5" />
+      </svg>
+
+      <!-- Textos por cima da câmera -->
+      <div class="camera-topo"><span class="rec"></span> CÂMERA DE RÉ</div>
+      <div class="aviso-parar"><span>PARE!</span></div>
+    </section>
+
+    <!-- ========== 3. PAINEL (distância, mensagem e barra) ========== -->
+    <section class="caixa painel">
+      <div class="linha">
+        <div id="distancia-texto">2,00 m</div>
+        <div id="mensagem">Caminho livre, parceiro!</div>
+      </div>
+
+      <!-- 8 segmentos: 3 verdes, 2 amarelos e 3 vermelhos -->
+      <div id="barra">
+        <div class="segmento verde"></div>
+        <div class="segmento verde"></div>
+        <div class="segmento verde"></div>
+        <div class="segmento amarelo"></div>
+        <div class="segmento amarelo"></div>
+        <div class="segmento vermelho"></div>
+        <div class="segmento vermelho"></div>
+        <div class="segmento vermelho"></div>
+      </div>
+    </section>
+
+    <!-- ========== 4. VISTA DE CIMA ========== -->
+    <section class="caixa">
+      <svg viewBox="0 0 400 230" id="vista-topo">
+        <line x1="0" y1="226" x2="400" y2="226" stroke="#fff" stroke-width="3" opacity="0.5" />
+
+        <!-- Arcos do sensor (do mais perto ao mais longe) -->
+        <path id="arco-1" class="arco vermelho" d="M165 116 Q200 140 235 116" />
+        <path id="arco-2" class="arco amarelo" d="M153 128 Q200 168 247 128" />
+        <path id="arco-3" class="arco verde" d="M141 140 Q200 196 259 140" />
+
+        <!-- Obstáculo visto de cima (o JavaScript move este grupo) -->
+        <g id="obstaculo-topo">
+          <rect x="168" y="0" width="64" height="12" rx="6" fill="#1c1c1c" stroke="#000" stroke-width="2" />
+          <rect x="176" y="3" width="48" height="3" rx="1.5" fill="#f4f4f4" />
+        </g>
+
+        <!-- McQueen visto de cima -->
+        <rect x="152" y="26" width="14" height="24" rx="4" fill="#111" />
+        <rect x="234" y="26" width="14" height="24" rx="4" fill="#111" />
+        <rect x="152" y="68" width="14" height="24" rx="4" fill="#111" />
+        <rect x="234" y="68" width="14" height="24" rx="4" fill="#111" />
+        <rect x="160" y="6" width="80" height="106" rx="34" fill="#d11a1a" stroke="#7a0b0b" stroke-width="3" />
+        <rect x="170" y="38" width="60" height="16" rx="6" fill="#9bd1e6" stroke="#0b2a3a" stroke-width="2" />
+        <rect x="172" y="76" width="56" height="12" rx="5" fill="#7fb8d1" stroke="#0b2a3a" stroke-width="2" />
+        <text x="200" y="68" text-anchor="middle" font-family="Russo One, Impact, sans-serif" font-size="16" fill="#ffd21f">95</text>
+        <polygon points="204,92 190,102 199,102 194,110 210,98 201,98" fill="#ffd21f" />
+        <rect x="156" y="106" width="88" height="8" rx="3" fill="#222" />
+        <rect x="164" y="104" width="12" height="5" rx="2" fill="#ff5a3c" />
+        <rect x="224" y="104" width="12" height="5" rx="2" fill="#ff5a3c" />
+      </svg>
+    </section>
+
+    <!-- ========== 5. CONTROLES ========== -->
+    <section class="caixa controles">
+      <label for="deslizante">
+        Distância do obstáculo: <span id="distancia-valor">2,00 m</span>
+      </label>
+      <input id="deslizante" type="range" min="0.2" max="2" step="0.01" value="2">
+
+      <div class="botoes">
+        <button id="botao-auto">▶ Dar ré</button>
+        <button id="botao-som">🔇 Ligar som</button>
+      </div>
+      <p>Arraste a barra ou toque em “Dar ré”. Ligue o som para ouvir os bipes.</p>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

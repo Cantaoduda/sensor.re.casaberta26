@@ -1,0 +1,286 @@
+/* ==========================================
+   SENSOR DE RÉ DO McQUEEN - ESTILOS
+   Seções: 1) Geral  2) Cabeçalho  3) Caixas
+           4) Câmera  5) Painel  6) Vista de cima
+           7) Controles  8) Cores por zona
+   ========================================== */
+
+
+/* ---------- 1. GERAL ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  color: #fff4e0;
+  background: linear-gradient(#ff9f43, #c0392b);
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+}
+
+#app {
+  width: 100%;
+  max-width: 480px;
+  padding: 14px;
+}
+
+
+/* ---------- 2. CABEÇALHO ---------- */
+header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.placa {
+  display: inline-block;
+  font-family: 'Russo One', Impact, sans-serif;
+  font-size: 0.8rem;
+  background: #ffd21f;
+  color: #1c1c1c;
+  border: 3px solid #1c1c1c;
+  border-radius: 6px;
+  padding: 2px 14px;
+  transform: rotate(-2deg);
+}
+
+h1 {
+  font-family: 'Russo One', Impact, sans-serif;
+  font-size: 2rem;
+  font-style: italic;
+  color: #fff;
+  text-shadow: 3px 3px 0 #1c1c1c;
+  margin: 8px 0 2px;
+}
+
+header p {
+  margin: 0;
+  font-weight: 600;
+  color: #fff;
+}
+
+
+/* ---------- 3. CAIXAS (cartões escuros) ---------- */
+.caixa {
+  background: #2b1a16;
+  border: 4px solid #1c1c1c;
+  border-radius: 18px;
+  box-shadow: 0 6px 0 #1c1c1c;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.caixa svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+/* ---------- 4. CÂMERA ---------- */
+#camera {
+  position: relative;
+  outline: 3px solid #3ddc5a;
+  outline-offset: -3px;
+}
+
+.faixa {
+  opacity: 0.15;
+}
+
+.faixa.ativa {
+  opacity: 0.6;
+}
+
+.camera-topo {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Russo One', sans-serif;
+  font-size: 0.72rem;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* bolinha vermelha piscando */
+.rec {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff3b30;
+  animation: piscar 1s steps(2) infinite;
+}
+
+/* aviso "PARE!" (começa escondido) */
+.aviso-parar {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.aviso-parar span {
+  font-family: 'Russo One', sans-serif;
+  font-size: 2.4rem;
+  color: #fff;
+  background: #ff3b30;
+  border: 4px solid #fff;
+  border-radius: 10px;
+  padding: 4px 22px;
+  transform: rotate(-4deg);
+  animation: piscar 0.4s steps(2) infinite;
+}
+
+/* quando o JavaScript coloca a classe "parar" na câmera */
+#camera.parar .aviso-parar {
+  display: flex;
+}
+
+#camera.parar {
+  animation: tremer 0.25s linear infinite;
+}
+
+@keyframes piscar {
+  50% { opacity: 0.15; }
+}
+
+@keyframes tremer {
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+
+/* ---------- 5. PAINEL ---------- */
+.painel {
+  background: #3b251f;
+  padding: 14px;
+}
+
+.painel .linha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#distancia-texto {
+  font-family: 'Russo One', sans-serif;
+  font-size: 2.4rem;
+  color: #3ddc5a;
+}
+
+#mensagem {
+  font-weight: 800;
+  text-align: right;
+  max-width: 55%;
+}
+
+#barra {
+  display: flex;
+  gap: 5px;
+  height: 34px;
+}
+
+.segmento {
+  flex: 1;
+  background: #120a08;
+  border: 2px solid #000;
+  border-radius: 5px;
+}
+
+/* segmento aceso = ganha a cor da sua faixa */
+.segmento.verde.aceso    { background: #3ddc5a; }
+.segmento.amarelo.aceso  { background: #ffd21f; }
+.segmento.vermelho.aceso { background: #ff3b30; }
+
+
+/* ---------- 6. VISTA DE CIMA ---------- */
+#vista-topo {
+  background: #4f4f57;
+}
+
+.arco {
+  fill: none;
+  stroke: #777;
+  stroke-width: 9;
+  stroke-linecap: round;
+  opacity: 0.25;
+}
+
+.arco.aceso {
+  opacity: 1;
+}
+
+.arco.verde.aceso    { stroke: #3ddc5a; }
+.arco.amarelo.aceso  { stroke: #ffd21f; }
+.arco.vermelho.aceso { stroke: #ff3b30; }
+
+
+/* ---------- 7. CONTROLES ---------- */
+.controles {
+  background: #3b251f;
+  padding: 14px;
+}
+
+.controles label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.controles input {
+  width: 100%;
+  height: 34px;
+}
+
+.controles p {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #e8c9a0;
+  margin: 10px 0 0;
+}
+
+.botoes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+button {
+  font-family: 'Russo One', Impact, sans-serif;
+  font-size: 0.95rem;
+  color: #1c1c1c;
+  background: #ffd21f;
+  border: 3px solid #1c1c1c;
+  border-radius: 12px;
+  box-shadow: 0 4px 0 #1c1c1c;
+  padding: 12px 8px;
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #1c1c1c;
+}
+
+/* botão ligado (som ligado ou ré automática) */
+button.ligado {
+  background: #3ddc5a;
+}
+
+
+/* ---------- 8. CORES POR ZONA ----------
+   O JavaScript troca a classe do #app entre
+   verde, amarelo e vermelho. */
+#app.amarelo #distancia-texto { color: #ffd21f; }
+#app.vermelho #distancia-texto { color: #ff3b30; }
+
+#app.amarelo #camera  { outline-color: #ffd21f; }
+#app.vermelho #camera { outline-color: #ff3b30; }
